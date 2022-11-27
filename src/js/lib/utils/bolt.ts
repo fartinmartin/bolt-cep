@@ -1,6 +1,6 @@
-import CSInterface from "../lib/csinterface";
-import Vulcan, { VulcanMessage } from "../lib/vulcan";
-import { ns } from "../../shared/shared";
+import CSInterface from "../cep/csinterface";
+import Vulcan, { VulcanMessage } from "../cep/vulcan";
+import { ns } from "../../../shared/shared";
 
 export const csi = new CSInterface();
 export const vulcan = new Vulcan();

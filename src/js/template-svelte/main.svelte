@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { fs, os, path } from "../lib/node";
+  import { fs, os, path } from "../lib/cep/node";
   import {
     csi,
     evalES,
     evalFile,
     openLinkInBrowser,
     subscribeBackgroundColor,
-  } from "../lib/utils";
+  } from "../lib/utils/bolt";
 
   import viteLogo from "../assets/vite.svg";
   import svelteLogo from "../assets/svelte.svg";

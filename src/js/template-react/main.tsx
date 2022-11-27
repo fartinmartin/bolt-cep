@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { os, path, fs } from "../lib/node";
+import { os, path, fs } from "../lib/cep/node";
 import {
   csi,
   evalES,
   evalFile,
   openLinkInBrowser,
   subscribeBackgroundColor,
-} from "../lib/utils";
+} from "../lib/utils/bolt";
 
 import reactLogo from "../assets/react.svg";
 import viteLogo from "../assets/vite.svg";

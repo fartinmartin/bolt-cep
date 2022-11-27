@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { fs, os, path } from "../lib/node";
+import { fs, os, path } from "../lib/cep/node";
 import {
   csi,
   evalES,
   evalFile,
   openLinkInBrowser,
   subscribeBackgroundColor,
-} from "../lib/utils";
+} from "../lib/utils/bolt";
 import "../index.scss";
 
 const count = ref(0);
