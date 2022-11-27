@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import { os, path } from "../lib/cep/node";
 import {
+  addFlyOutMenuItems,
   csi,
   evalES,
   initBolt,
@@ -28,6 +29,9 @@ onMounted(() => {
   if (window.cep) {
     subscribeBackgroundColor((c: string) => (backgroundColor.value = c));
     initBolt();
+    addFlyOutMenuItems([
+      { id: "test", label: "Test Item", callback: () => alert("Hello!") },
+    ]);
   }
 });
 </script>

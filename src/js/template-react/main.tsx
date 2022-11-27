@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { os, path } from "../lib/cep/node";
 import {
+  addFlyOutMenuItems,
   csi,
   evalES,
   initBolt,
@@ -39,6 +40,9 @@ const Main = () => {
     if (window.cep) {
       subscribeBackgroundColor(setBgColor);
       initBolt();
+      addFlyOutMenuItems([
+        { id: "test", label: "Test Item", callback: () => alert("Hello!") },
+      ]);
     }
   }, []);
 

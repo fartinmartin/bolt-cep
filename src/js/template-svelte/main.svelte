@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { os, path } from "../lib/cep/node";
   import {
+    addFlyOutMenuItems,
     csi,
     evalES,
     initBolt,
@@ -40,6 +41,9 @@
     if (window.cep) {
       subscribeBackgroundColor((c: string) => (backgroundColor = c));
       initBolt();
+      addFlyOutMenuItems([
+        { id: "test", label: "Test Item", callback: () => alert("Hello!") },
+      ]);
     }
   });
 </script>
