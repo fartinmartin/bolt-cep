@@ -1,6 +1,7 @@
 import CSInterface from "../cep/csinterface";
 import Vulcan, { VulcanMessage } from "../cep/vulcan";
 import { ns } from "../../../shared/shared";
+import { fs } from "../cep/node";
 
 export const csi = new CSInterface();
 export const vulcan = new Vulcan();
@@ -10,6 +11,16 @@ export const openLinkInBrowser = (url: string) => {
     csi.openURLInDefaultBrowser(url);
   } else {
     location.href = url;
+  }
+};
+
+export const initBolt = () => {
+  if (window.cep) {
+    const extRoot = csi.getSystemPath("extension");
+    const jsxSrc = `${extRoot}/jsx/index.js`;
+    const jsxBinSrc = `${extRoot}/jsx/index.jsxbin`;
+    if (fs.existsSync(jsxSrc)) evalFile(jsxSrc);
+    else if (fs.existsSync(jsxBinSrc)) evalFile(jsxBinSrc);
   }
 };
 

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { fs, os, path } from "../lib/cep/node";
+import { os, path } from "../lib/cep/node";
 import {
   csi,
   evalES,
-  evalFile,
+  initBolt,
   openLinkInBrowser,
   subscribeBackgroundColor,
 } from "../lib/utils/bolt";
@@ -27,16 +27,7 @@ const nodeTest = () => {
 onMounted(() => {
   if (window.cep) {
     subscribeBackgroundColor((c: string) => (backgroundColor.value = c));
-    const extRoot = csi.getSystemPath("extension");
-    const jsxSrc = `${extRoot}/jsx/index.js`;
-    const jsxBinSrc = `${extRoot}/jsx/index.jsxbin`;
-    if (fs.existsSync(jsxSrc)) {
-      console.log(jsxSrc);
-      evalFile(jsxSrc);
-    } else if (fs.existsSync(jsxBinSrc)) {
-      console.log(jsxBinSrc);
-      evalFile(jsxBinSrc);
-    }
+    initBolt();
   }
 });
 </script>
