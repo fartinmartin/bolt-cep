@@ -6,23 +6,18 @@ import { fs } from "../cep/node";
 export const csi = new CSInterface();
 export const vulcan = new Vulcan();
 
-export const openLinkInBrowser = (url: string) => {
-  if (window.cep) {
-    csi.openURLInDefaultBrowser(url);
-  } else {
-    location.href = url;
-  }
-};
+// jsx utils
 
-export const initBolt = () => {
-  if (window.cep) {
-    const extRoot = csi.getSystemPath("extension");
-    const jsxSrc = `${extRoot}/jsx/index.js`;
-    const jsxBinSrc = `${extRoot}/jsx/index.jsxbin`;
-    if (fs.existsSync(jsxSrc)) evalFile(jsxSrc);
-    else if (fs.existsSync(jsxBinSrc)) evalFile(jsxBinSrc);
-  }
-};
+/**
+ * @function EvalES
+ * Evaluates a string in ExtendScript scoped to the project's namespace
+ * Optionally, pass true to the isGlobal param to avoid scoping
+ *
+ * @param script    The script as a string to be evaluated
+ * @param isGlobal  Optional. Defaults to false,
+ *
+ * @return String Result.
+ */
 
 export const evalES = (script: string, isGlobal = false): Promise<string> => {
   return new Promise(function (resolve, reject) {
@@ -34,6 +29,80 @@ export const evalES = (script: string, isGlobal = false): Promise<string> => {
       "try{" + fullString + "}catch(e){alert(e);}",
       (res: string) => {
         resolve(res);
+      }
+    );
+  });
+};
+
+import type { Scripts } from "@esTypes/index";
+
+type ArgTypes<F extends Function> = F extends (...args: infer A) => any
+  ? A
+  : never;
+type ReturnType<F extends Function> = F extends (...args: infer A) => infer B
+  ? B
+  : never;
+
+/**
+ * @description End-to-end type-safe ExtendScript evaluation with error handling
+ * Call ExtendScript functions from CEP with type-safe parameters and return types.
+ * Any ExtendScript errors are captured and logged to the CEP console for tracing
+ *
+ * @param functionName The name of the function to be evaluated.
+ * @param args the list of arguments taken by the function.
+ *
+ * @return Promise resolving to function native return type.
+ *
+ * @example
+ * // CEP
+ * evalTS("myFunc", 60, 'test').then((res) => {
+ *    console.log(res.word);
+ * });
+ *
+ * // ExtendScript
+ * export const myFunc = (num: number, word: string) => {
+ *    return { num, word };
+ * }
+ *
+ */
+
+export const evalTS = <
+  Key extends string & keyof Scripts,
+  Func extends Function & Scripts[Key]
+>(
+  functionName: Key,
+  ...args: ArgTypes<Func>
+): Promise<ReturnType<Func>> => {
+  return new Promise(function (resolve, reject) {
+    const formattedArgs = args
+      .map((arg) => {
+        console.log(JSON.stringify(arg));
+        return `${JSON.stringify(arg)}`;
+      })
+      .join(",");
+    csi.evalScript(
+      `try{
+          var host = typeof $ !== 'undefined' ? $ : window;
+          var res = host["${ns}"].${functionName}(${formattedArgs});
+          JSON.stringify(res);
+        }catch(e){
+          e.fileName = new File(e.fileName).fsName;
+          JSON.stringify(e);
+        }`,
+      (res: string) => {
+        try {
+          //@ts-ignore
+          if (res === "undefined") return resolve();
+          const parsed = JSON.parse(res);
+          if (parsed.name === "ReferenceError") {
+            console.error("REFERENCE ERROR");
+            reject(parsed);
+          } else {
+            resolve(parsed);
+          }
+        } catch (error) {
+          reject(res);
+        }
       }
     );
   });
@@ -75,6 +144,31 @@ export const addFlyOutMenuItems = (items: FlyOutMenuItem[]) => {
       false
     );
   });
+// js utils
+
+export const initBolt = (log = true) => {
+  if (window.cep) {
+    const extRoot = csi.getSystemPath("extension");
+    const jsxSrc = `${extRoot}/jsx/index.js`;
+    const jsxBinSrc = `${extRoot}/jsx/index.jsxbin`;
+    if (fs.existsSync(jsxSrc)) {
+      if (log) console.log(jsxSrc);
+      evalFile(jsxSrc);
+    } else if (fs.existsSync(jsxBinSrc)) {
+      if (log) console.log(jsxBinSrc);
+      evalFile(jsxBinSrc);
+    }
+  }
+};
+
+export const posix = (str: string) => str.replace(/\\/g, "/");
+
+export const openLinkInBrowser = (url: string) => {
+  if (window.cep) {
+    csi.openURLInDefaultBrowser(url);
+  } else {
+    location.href = url;
+  }
 };
 
 export const getAppBackgroundColor = () => {
@@ -108,6 +202,8 @@ export const subscribeBackgroundColor = (callback: (color: string) => void) => {
   );
 };
 
+// vulcan
+
 declare type IVulcanMessageObject = {
   event: string;
   callbackID?: string;
@@ -134,8 +230,6 @@ export const vulcanListen = (id: string, callback: Function) => {
   );
 };
 
-export const posix = (str: string) => str.replace(/\\/g, "/");
-
 export const isAppRunning = (targetSpecifier: string) => {
   const { major, minor, micro } = csi.getCurrentApiVersion();
   const version = parseFloat(`${major}.${minor}`);
@@ -145,3 +239,40 @@ export const isAppRunning = (targetSpecifier: string) => {
     return vulcan.isAppRunning(targetSpecifier);
   }
 };
+
+interface IOpenDialogResult {
+  data: string[];
+}
+export const selectFolder = (
+  dir: string,
+  msg: string,
+  callback: (res: string) => void
+) => {
+  const result = window.cep.fs.showOpenDialog(
+    false,
+    true,
+    msg,
+    dir
+  ) as IOpenDialogResult;
+  if (result.data?.length > 0) {
+    const folder = decodeURIComponent(result.data[0].replace("file://", ""));
+    callback(folder);
+  }
+};
+
+export const selectFile = (
+  dir: string,
+  msg: string,
+  callback: (res: string) => void
+) => {
+  const result = window.cep.fs.showOpenDialog(
+    false,
+    false,
+    msg,
+    dir
+  ) as IOpenDialogResult;
+  if (result.data?.length > 0) {
+    const folder = decodeURIComponent(result.data[0].replace("file://", ""));
+    callback(folder);
+  }
+}};

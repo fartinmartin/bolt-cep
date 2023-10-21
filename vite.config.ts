@@ -21,7 +21,8 @@ const outDir = path.resolve(__dirname, "dist", "cep");
 
 const debugReact = process.env.DEBUG_REACT === "true";
 const isProduction = process.env.NODE_ENV === "production";
-const isPackage = process.env.ZXP_PACKAGE === "true";
+const isMetaPackage = process.env.ZIP_PACKAGE === "true";
+const isPackage = process.env.ZXP_PACKAGE === "true" || isMetaPackage;
 const isServe = process.env.SERVE_PANEL === "true";
 const action = process.env.ACTION;
 
@@ -34,11 +35,13 @@ const config = {
   cepConfig,
   isProduction,
   isPackage,
+  isMetaPackage,
   isServe,
   debugReact,
   dir: `${__dirname}/${devDist}`,
   cepDist: cepDist,
   zxpDir: `${__dirname}/${devDist}/zxp`,
+  zipDir: `${__dirname}/${devDist}/zip`,
   packages: cepConfig.installModules || [],
 };
 
@@ -55,6 +58,9 @@ export default defineConfig({
     svelte({ preprocess: sveltePreprocess({ typescript: true }) }), // BOLT-CEP_SVELTE-ONLY
     cep(config),
   ],
+  resolve: {
+    alias: [{ find: "@esTypes", replacement: path.resolve(__dirname, "src") }],
+  },
   root,
   clearScreen: false,
   server: {

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { os, path, fs } from "../lib/node";
+import { os, path } from "../lib/cep/node";
 import {
   csi,
   evalES,
   evalFile,
   openLinkInBrowser,
   subscribeBackgroundColor,
-} from "../lib/utils";
+  evalTS,
+} from "../lib/utils/bolt";
 
 import reactLogo from "../assets/react.svg";
 import viteLogo from "../assets/vite.svg";
@@ -23,8 +24,33 @@ const Main = () => {
   const [bgColor, setBgColor] = useState("#282c34");
   const [count, setCount] = useState(0);
 
+  //* Demonstration of Traditional string eval-based ExtendScript Interaction
   const jsxTest = () => {
     console.log(evalES(`helloWorld("${csi.getApplicationID()}")`));
+  };
+
+  //* Demonstration of End-to-End Type-safe ExtendScript Interaction
+  const jsxTestTS = () => {
+    evalTS("helloStr", "test").then((res) => {
+      console.log(res);
+    });
+    evalTS("helloNum", 1000).then((res) => {
+      console.log(typeof res, res);
+    });
+    evalTS("helloArrayStr", ["ddddd", "aaaaaa", "zzzzzzz"]).then((res) => {
+      console.log(typeof res, res);
+    });
+    evalTS("helloObj", { height: 90, width: 100 }).then((res) => {
+      console.log(typeof res, res);
+      console.log(res.x);
+      console.log(res.y);
+    });
+    evalTS("helloVoid").then(() => {
+      console.log("function returning void complete");
+    });
+    evalTS("helloError", "test").catch((e) => {
+      console.log("there was an error", e);
+    });
   };
 
   const nodeTest = () => {
@@ -38,16 +64,6 @@ const Main = () => {
   useEffect(() => {
     if (window.cep) {
       subscribeBackgroundColor(setBgColor);
-      const extRoot = csi.getSystemPath("extension");
-      const jsxSrc = `${extRoot}/jsx/index.js`;
-      const jsxBinSrc = `${extRoot}/jsx/index.jsxbin`;
-      if (fs.existsSync(jsxSrc)) {
-        console.log(jsxSrc);
-        evalFile(jsxSrc);
-      } else if (fs.existsSync(jsxBinSrc)) {
-        console.log(jsxBinSrc);
-        evalFile(jsxBinSrc);
-      }
     }
   }, []);
 
@@ -86,6 +102,7 @@ const Main = () => {
           <button onClick={jsxTest}>
             <img className="icon-button" src={adobe} />
           </button>
+          <button onClick={jsxTestTS}>Ts</button>
         </div>
         <p>
           Edit <code>main.tsx</code> and save to test HMR updates.

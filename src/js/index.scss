@@ -1,3 +1,4 @@
+@import "./variables.scss";
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -28,7 +29,7 @@ code {
 }
 
 .app-link {
-  color: #61dafb;
+  color: white;
 }
 
 button {
@@ -76,10 +77,26 @@ button:active {
   }
 }
 .icon {
-  width: 250px;
-  height: 250px;
+  width: 350px;
+  height: 150px;
 }
 .icon-button {
   width: 20px;
   height: 20px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  -webkit-appearance: always;
+}
+::-webkit-scrollbar-track {
+  background: $darkest;
+  padding: 2.25em 1.6875em;
+}
+::-webkit-scrollbar-thumb {
+  background: $darker;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: $dark;
 }

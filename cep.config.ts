@@ -13,18 +13,15 @@ const config: CEP_Config = {
   extensionManifestVersion: 6.0,
   requiredRuntimeVersion: 9.0,
   hosts: [
-    {
-      name: "AEFT",
-      version: "[0.0,99.9]",
-    },
-    {
-      name: "PPRO",
-      version: "[0.0,99.9]",
-    },
-    {
-      name: "FLPR",
-      version: "[0.0,99.9]",
-    },
+    { name: "AEFT", version: "[0.0,99.9]" },
+    { name: "AME", version: "[0.0,99.9]" },
+    { name: "AUDT", version: "[0.0,99.9]" },
+    { name: "FLPR", version: "[0.0,99.9]" },
+    { name: "IDSN", version: "[0.0,99.9]" },
+    { name: "ILST", version: "[0.0,99.9]" },
+    { name: "KBRG", version: "[0.0,99.9]" },
+    { name: "PHXS", version: "[0.0,99.9]" },
+    { name: "PPRO", version: "[0.0,99.9]" },
   ],
 
   type: "Panel",
@@ -48,7 +45,7 @@ const config: CEP_Config = {
     ...debugAll, // BOLT-CEP-DEBUG-ONLY
   ],
   build: {
-    jsxBin: "copy",
+    jsxBin: "off",
     sourceMap: true,
   },
   zxp: {
@@ -58,9 +55,10 @@ const config: CEP_Config = {
     password: "mypassword",
     tsa: "http://timestamp.digicert.com/",
     sourceMap: false,
-    jsxBin: "replace",
+    jsxBin: "off",
   },
   installModules: [],
   copyAssets: [],
+  copyZipAssets: [],
 };
 export default config;
