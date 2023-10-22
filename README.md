@@ -57,9 +57,9 @@ _Full Blog Post:_ https://hyperbrew.co/blog/bolt-cep-build-extensions-faster/
 
 ## Quick Start
 
-<img src="src/js/assets/create-bolt-cep.jpg" alt="Bolt CEP">
+<img src="images/create-bolt-cep.jpg" alt="Bolt CEP">
 
-<img src="create-bolt-cep--demo.gif" alt="Bolt CEP">
+<img src="images/create-bolt-cep--demo.gif" alt="Bolt CEP">
 
 `yarn create bolt-cep`
 
