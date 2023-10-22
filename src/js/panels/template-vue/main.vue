@@ -36,8 +36,8 @@ const jsxTestTS = () => {
   });
 
   evalTS("helloObj", { height: 90, width: 100 }).then((res) => {
-    console.log(typeof res, res); // @ts-ignore
-    console.log(res.x); // @ts-ignore
+    console.log(typeof res, res);
+    console.log(res.x);
     console.log(res.y);
   });
 

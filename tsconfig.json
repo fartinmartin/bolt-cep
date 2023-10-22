@@ -16,15 +16,11 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@esTypes/*": ["./src/js/lib/bolt/types"],
+      "@esTypes/*": ["./src/jsx"],
       "@lib/*": ["./src/js/lib/*"],
       "@shared/*": ["./src/shared/*"]
     }
   },
   "include": ["./src"],
-  "exclude": [
-    "./src/jsx",
-    // "./src/js/panels/template-*",
-    "node_modules/@types/react/index.d.ts"
-  ]
+  "exclude": ["./src/jsx", "node_modules/@types/react/index.d.ts"]
 }
