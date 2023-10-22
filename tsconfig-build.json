@@ -3,7 +3,9 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "paths": {
-      "@esTypes/*": ["./src/js/lib/cep/es-types"]
+      "@esTypes/*": ["./src/js/lib/bolt/types"],
+      "@lib/*": ["./src/js/lib/*"],
+      "@shared/*": ["./src/shared/*"]
     }
   }
 }

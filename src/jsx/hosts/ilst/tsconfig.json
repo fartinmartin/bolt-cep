@@ -5,9 +5,9 @@
     "noLib": true,
     "strict": true,
     "types": [
-      "./global",
-      "../../node_modules/types-for-adobe/shared/global",
-      "../../node_modules/types-for-adobe/shared/PlugPlugExternalObject"
+      "../../global",
+      "../../../../node_modules/types-for-adobe/Illustrator/2015.3",
+      "../../../../node_modules/types-for-adobe/shared/PlugPlugExternalObject"
     ]
   },
   "include": ["./**/*"]

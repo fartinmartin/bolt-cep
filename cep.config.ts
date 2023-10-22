@@ -35,7 +35,7 @@ const config: CEP_Config = {
 
   panels: [
     {
-      mainPath: "./main/index.html",
+      mainPath: "./panels/main/index.html",
       name: "main",
       panelDisplayName: "Bolt CEP",
       autoVisible: true,
