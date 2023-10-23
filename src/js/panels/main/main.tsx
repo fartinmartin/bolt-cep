@@ -79,7 +79,7 @@ const Main = () => {
         <div className="stack-icons">
           <div>
             <img src={viteLogo} />
-            Vite
+            Viteasf
           </div>
           +
           <div>

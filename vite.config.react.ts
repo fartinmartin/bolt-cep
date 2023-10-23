@@ -55,10 +55,10 @@ export default defineConfig({
   root,
   clearScreen: false,
   server: {
-    port: cepConfig.port,
+    port: cepConfig.serverConfig.port,
   },
   preview: {
-    port: cepConfig.servePort,
+    port: cepConfig.serverConfig.servePort,
   },
 
   build: {

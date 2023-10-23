@@ -3,15 +3,23 @@ import { version } from "./package.json";
 import { debugAll } from "./cep.config.debug"; // BOLT-CEP-DEBUG-ONLY
 
 const config: CEP_Config = {
-  version,
   id: "com.bolt.cep",
   displayName: "Bolt CEP",
+  version,
+
+  type: "Panel",
+  parameters: ["--v=0", "--enable-nodejs", "--mixed-context"],
   symlink: "local",
-  port: 3000,
-  servePort: 5000,
-  startingDebugPort: 8860,
+
   extensionManifestVersion: 6.0,
   requiredRuntimeVersion: 9.0,
+
+  serverConfig: {
+    port: 3000,
+    servePort: 5000,
+    startingDebugPort: 8860,
+  },
+
   hosts: [
     { name: "AEFT", version: "[0.0,99.9]" },
     { name: "AME", version: "[0.0,99.9]" },
@@ -24,30 +32,37 @@ const config: CEP_Config = {
     { name: "PPRO", version: "[0.0,99.9]" },
   ],
 
-  type: "Panel",
-  iconDarkNormal: "./src/assets/light-icon.png",
-  iconNormal: "./src/assets/dark-icon.png",
-  iconDarkNormalRollOver: "./src/assets/light-icon.png",
-  iconNormalRollOver: "./src/assets/dark-icon.png",
-  parameters: ["--v=0", "--enable-nodejs", "--mixed-context"],
-  width: 500,
-  height: 550,
-
   panels: [
     {
       mainPath: "./panels/main/index.html",
       name: "main",
-      panelDisplayName: "Bolt CEP",
-      autoVisible: true,
-      width: 600,
-      height: 650,
+      displayName: "Bolt CEP",
+      window: {
+        autoVisible: true,
+        width: 600,
+        height: 650,
+      },
     },
     ...debugAll, // BOLT-CEP-DEBUG-ONLY
   ],
+
+  icons: {
+    darkNormal: "./src/assets/light-icon.png",
+    normal: "./src/assets/dark-icon.png",
+    darkNormalRollOver: "./src/assets/light-icon.png",
+    normalRollOver: "./src/assets/dark-icon.png",
+  },
+
+  window: {
+    width: 500,
+    height: 550,
+  },
+
   build: {
     jsxBin: "off",
     sourceMap: true,
   },
+
   zxp: {
     country: "US",
     province: "CA",
@@ -57,8 +72,14 @@ const config: CEP_Config = {
     sourceMap: false,
     jsxBin: "off",
   },
-  installModules: [],
-  copyAssets: [],
-  copyZipAssets: [],
+
+  bundle: {
+    copy: [],
+    zip: [],
+  },
+
+  // installModules: [],
+  // scriptPath: undefined,
+  // standalone: false,
 };
 export default config;

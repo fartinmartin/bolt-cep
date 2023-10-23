@@ -6,6 +6,7 @@ import { jsxInclude, jsxBin, jsxPonyfill } from "vite-cep-plugin";
 import { CEP_Config } from "vite-cep-plugin";
 import json from "@rollup/plugin-json";
 import path from "path";
+import { tmpdir } from "os";
 
 const GLOBAL_THIS = "thisObj";
 
@@ -48,7 +49,10 @@ export const extendscriptConfig = (
         iife: true,
         globalThis: GLOBAL_THIS,
       }),
-      jsxBin(isPackage ? cepConfig.zxp.jsxBin : cepConfig.build?.jsxBin),
+      jsxBin(
+        tmpdir(),
+        isPackage ? cepConfig.zxp.jsxBin : cepConfig.build?.jsxBin
+      ),
     ],
   };
 
